@@ -1,0 +1,40 @@
+name: Support via Issue
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  send-reset-mail:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract data from issue
+        id: extract
+        run: |
+          echo "ISSUE_BODY<<EOF" >> $GITHUB_ENV
+          echo "${{ github.event.issue.body }}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Parse fields
+        id: parse
+        run: |
+          HOTEL=$(echo "$ISSUE_BODY" | grep -i "Hotel-ID:" | cut -d':' -f2 | xargs)
+          EMAIL=$(echo "$ISSUE_BODY" | grep -i "E-Mail:" | cut -d':' -f2 | xargs)
+          INSTALL=$(echo "$ISSUE_BODY" | grep -i "Installation-ID:" | cut -d':' -f2 | xargs)
+          MESSAGE=$(echo "$ISSUE_BODY" | grep -i "Nachricht:" | cut -d':' -f2- | xargs)
+          KEY=$(openssl rand -hex 16)
+          echo "hotel=$HOTEL" >> $GITHUB_OUTPUT
+          echo "email=$EMAIL" >> $GITHUB_OUTPUT
+          echo "install=$INSTALL" >> $GITHUB_OUTPUT
+          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+          echo "key=$KEY" >> $GITHUB_OUTPUT
+
+      - name: Send Mail via Mailgun
+        run: |
+          curl -s --user "api:${{ secrets.MAILGUN_API_KEY }}" \
+          https://api.mailgun.net/v3/${{ secrets.MAILGUN_DOMAIN }}/messages \
+          -F from="${{ secrets.MAILGUN_FROM }}" \
+          -F to="${{ steps.parse.outputs.email }}" \
+          -F subject="ClosedBills Reset-Key" \
+          -F text="Hallo,\n\nIhr Reset-Key lautet:\n${{ steps.parse.outputs.key }}\n\nHotel-ID: ${{ steps.parse.outputs.hotel }}\nInstallation-ID: ${{ steps.parse.outputs.install }}\nNachricht: ${{ steps.parse.outputs.message }}"
