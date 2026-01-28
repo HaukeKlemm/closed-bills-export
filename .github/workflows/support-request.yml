@@ -1,0 +1,29 @@
+name: ClosedBills Support Request
+
+on:
+  repository_dispatch:
+    types: [support_request]
+
+jobs:
+  send-reset-mail:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate Reset Key
+        id: keygen
+        run: |
+          KEY=$(openssl rand -hex 16)
+          echo "reset_key=$KEY" >> $GITHUB_OUTPUT
+
+      - name: Send Reset Email via Mailgun
+        run: |
+          curl -s --user "api:${{ secrets.MAILGUN_API_KEY }}" \
+          https://api.mailgun.net/v3/${{ secrets.MAILGUN_DOMAIN }}/messages \
+          -F from="${{ secrets.MAILGUN_FROM }}" \
+          -F to="${{ github.event.client_payload.email }}" \
+          -F subject="ClosedBills Reset-Key" \
+          -F text="Hallo, hier ist Ihr Reset-Key:\n\n${{ steps.keygen.outputs.reset_key }}\n\nHotel-ID: ${{ github.event.client_payload.hotelId }}\nInstallation-ID: ${{ github.event.client_payload.installationId }}\nNachricht: ${{ github.event.client_payload.message }}"
+
+      - name: Log info
+        run: |
+          echo "Reset-Key wurde gesendet an: ${{ github.event.client_payload.email }}"
