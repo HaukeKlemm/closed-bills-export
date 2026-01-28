@@ -1,0 +1,19 @@
+name: Support Form Proxy
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [support_form]
+
+jobs:
+  proxy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger support_request event
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/HaukeKlemm/closed-bills-export/dispatches \
+            -d "{\"event_type\": \"support_request\", \"client_payload\": ${{ toJson(github.event.client_payload) }}}"
