@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>ClosedBills Support</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ClosedBills Support</h1>
+        <p>Bitte fülle das Formular aus, um einen Reset-Key anzufordern.</p>
+
+        <form id="supportForm">
+            <label>Hotel-ID</label>
+            <input type="text" id="hotelId" required>
+
+            <label>E-Mail für Reset</label>
+            <input type="email" id="email" required>
+
+            <label>Installation-ID</label>
+            <input type="text" id="installationId" required>
+
+            <label>Nachricht (optional)</label>
+            <textarea id="message"></textarea>
+
+            <button type="submit">Absenden</button>
+        </form>
+
+        <div id="status"></div>
+    </div>
+
+    <script src="support.js"></script>
+</body>
+</html>
