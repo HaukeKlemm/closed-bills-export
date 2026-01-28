@@ -15,7 +15,7 @@ document.getElementById("supportForm").addEventListener("submit", async (e) => {
         method: "POST",
         headers: {
             "Accept": "application/vnd.github+json",
-            "Authorization": "Bearer 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"
+            "Authorization": "Bearer ${GITHUB_TOKEN}"
         },
         body: JSON.stringify({
             event_type: "support_request",
