@@ -11,7 +11,7 @@ document.getElementById("supportForm").addEventListener("submit", async (e) => {
     const status = document.getElementById("status");
     status.innerText = "Wird gesendet...";
 
-    const response = await fetch("https://cbe-support-proxy.deathydragon.workers.dev/", {
+    const response = await fetch("DEINE_WORKER_URL_HIER", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
