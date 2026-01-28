@@ -2,7 +2,7 @@ name: ClosedBills Support Request
 
 on:
   repository_dispatch:
-    types: [support_request]
+    types: [support_request, support_form]
 
 jobs:
   send-reset-mail:
