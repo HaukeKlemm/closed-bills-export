@@ -11,11 +11,11 @@ document.getElementById("supportForm").addEventListener("submit", async (e) => {
     const status = document.getElementById("status");
     status.innerText = "Wird gesendet...";
 
-    const response = await fetch("https://api.github.com/repos/DEIN_USERNAME/DEIN_REPO/dispatches", {
+    const response = await fetch("https://api.github.com/repos/HaukeKlemm/closed-bills-export/dispatches", {
         method: "POST",
         headers: {
             "Accept": "application/vnd.github+json",
-            "Authorization": "Bearer GITHUB_TOKEN_WIRD_SPÄTER_ERSETZT"
+            "Authorization": "Bearer GITHUB_TOKEN_WIRD_HIER_EINGEFÜGT"
         },
         body: JSON.stringify({
             event_type: "support_request",
