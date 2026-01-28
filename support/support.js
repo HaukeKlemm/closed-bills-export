@@ -26,6 +26,6 @@ document.getElementById("supportForm").addEventListener("submit", async (e) => {
     if (response.ok) {
         status.innerText = "Anfrage erfolgreich gesendet.";
     } else {
-        status.innerText = "Fehler beim Senden.";
+        status.innerText = "Fehler beim Senden: " + response.status + " " + response.statusText;
     }
 });
