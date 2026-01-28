@@ -14,11 +14,10 @@ document.getElementById("supportForm").addEventListener("submit", async (e) => {
     const response = await fetch("https://api.github.com/repos/HaukeKlemm/closed-bills-export/dispatches", {
         method: "POST",
         headers: {
-            "Accept": "application/vnd.github+json",
-            "Authorization": "Bearer ${GITHUB_TOKEN}"
+            "Accept": "application/vnd.github+json"
         },
         body: JSON.stringify({
-            event_type: "support_request",
+            event_type: "support_form",
             client_payload: data
         })
     });
