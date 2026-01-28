@@ -1,34 +1,27 @@
 document.getElementById("supportForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const hotelId = document.getElementById("hotelId").value;
-    const email = document.getElementById("email").value;
-    const installationId = document.getElementById("installationId").value;
-    const message = document.getElementById("message").value;
+    const data = {
+        hotelId: document.getElementById("hotelId").value,
+        email: document.getElementById("email").value,
+        installationId: document.getElementById("installationId").value,
+        message: document.getElementById("message").value
+    };
 
     const status = document.getElementById("status");
     status.innerText = "Wird gesendet...";
 
-    const issueBody =
-        `Hotel-ID: ${hotelId}\n` +
-        `E-Mail: ${email}\n` +
-        `Installation-ID: ${installationId}\n` +
-        `Nachricht: ${message}`;
-
-    const response = await fetch("https://api.github.com/repos/HaukeKlemm/closed-bills-export/issues", {
+    const response = await fetch("https://cbe-support-proxy.deathydragon.workers.dev/", {
         method: "POST",
         headers: {
-            "Accept": "application/vnd.github+json"
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            title: `Support-Anfrage von ${hotelId}`,
-            body: issueBody
-        })
+        body: JSON.stringify(data)
     });
 
     if (response.ok) {
         status.innerText = "Anfrage erfolgreich gesendet.";
     } else {
-        status.innerText = "Fehler beim Senden: " + response.status + " " + response.statusText;
+        status.innerText = "Fehler beim Senden: " + response.status;
     }
 });
