@@ -1,1 +1,17 @@
+name: Mailgun Test
 
+on:
+  workflow_dispatch:
+
+jobs:
+  send-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send test email via Mailgun
+        run: |
+          curl -s --user "api:${{ secrets.MAILGUN_API_KEY }}" \
+          https://api.mailgun.net/v3/${{ secrets.MAILGUN_DOMAIN }}/messages \
+          -F from="${{ secrets.MAILGUN_FROM }}" \
+          -F to="deathydragon@googlemail.com" \
+          -F subject="Mailgun Test über GitHub Actions" \
+          -F text="Hallo Hauke, wenn du diese Mail bekommst, funktioniert Mailgun über GitHub Actions."
